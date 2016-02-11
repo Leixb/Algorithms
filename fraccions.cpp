@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <vector>
 using namespace std;
 
 enum err {DEN_EQ_0};
