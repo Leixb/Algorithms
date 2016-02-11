@@ -4,7 +4,8 @@ using namespace std;
 
 enum err {DEN_EQ_0};
 
-template <class T>
+//template <class T>
+#define T long
 class frac {
 
     T N, D;
@@ -23,12 +24,12 @@ public:
     inline frac operator* (const frac& f) const { return frac(N*f.N,D*f.D); }
     inline frac operator/ (const frac& f) const { return frac(N*f.D,D*f.N); }
 
-    inline frac operator+= (const frac& f) { *this = *this + f; }
-    inline frac operator-= (const frac& f) { *this = *this - f; }
-    inline frac operator*= (const frac& f) { *this = *this * f; }
-    inline frac operator/= (const frac& f) { *this = *this / f; }
+    inline frac operator+= (const frac& f) { *this = *this + f; return *this; }
+    inline frac operator-= (const frac& f) { *this = *this - f; return *this; }
+    inline frac operator*= (const frac& f) { *this = *this * f; return *this; }
+    inline frac operator/= (const frac& f) { *this = *this / f; return *this; }
 
-    inline bool operator== (const frac& f) const { return (N==f.N and D==D.N); }
+    inline bool operator== (const frac& f) const { return (N==f.N and D==f.N); }
     inline bool operator>= (const frac& f) const { return (aprox() >= f.aprox()); }
     inline bool operator<= (const frac& f) const { return (aprox() <= f.aprox()); }
     inline bool operator< (const frac& f) const { return (aprox() < f.aprox()); }
@@ -38,17 +39,22 @@ public:
         out << f.N << '/' << f.D;
         return out;
     }
-    friend istream& operator>> (istream& in, const frac& f) {
+    friend istream& operator>> (istream& in, frac& f) {
         string s;
         in >> s;
-        for (int i = 0; i < s.size(); i++) {
-            if (s[i]=='/') {s[i]=' '; break;}
+        T n=1, d=1;
+        uint i;
+        for (i = 0; i < s.size(); i++) {
+            if (s[i]>='0' and s[i]<='9') n=n*10+(s[i]-'0');
+            else if (s[i]=='-' and i == 0) n*=-1;
+            else break;
         }
-        stringstream ss;
-        ss << s;
-        ss >> f.N >> f.D;
+        for ( auto j = i; j < s.size(); j++) {
+            if (s[j]>='0' and s[j]<='9') d=d*10+(s[j]-'0');
+            else if (s[j]=='-' and j==i) d*=-1;
+            else break;
+        }
         f.simplify();
-        return in;
     }
 
     frac runfunc(T (*func)(T)) const { return frac(func(N),func(D)); }
@@ -69,7 +75,6 @@ public:
 };
 
 int main () {
-    frac <long> f;
+    frac f;
     cin >> f;
-    cout << f;
 }
