@@ -42,10 +42,10 @@ public:
     inline frac operator/= (const frac& f) { *this = *this / f; return *this; }
 
     inline bool operator== (const frac& f) const { return (N==f.N and D==f.N); }
-    inline bool operator>= (const frac& f) const { return (aprox() >= f.aprox()); }
-    inline bool operator<= (const frac& f) const { return (aprox() <= f.aprox()); }
-    inline bool operator< (const frac& f) const { return (aprox() < f.aprox()); }
-    inline bool operator> (const frac& f) const { return (aprox() > f.aprox()); }
+    inline bool operator>= (const frac& f) const { return (N*f.D >= f.N*D); }
+    inline bool operator<= (const frac& f) const { return (N*f.D <= f.N*D); }
+    inline bool operator< (const frac& f) const { return (N*f.D > f.N*D); }
+    inline bool operator> (const frac& f) const { return (N*f.D < f.N*D); }
 
     friend ostream& operator<< (ostream& out, const frac& f) {
         out << f.n() << f.SEP << f.d();
