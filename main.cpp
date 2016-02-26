@@ -41,7 +41,7 @@ int main () {
     try {
         long a, b;
         cin >> a >> b;
-        frac f (a,b);
+        frac <long> f (a,b);
         cout << f << endl;
         frac f2;
         cin >> f2;
