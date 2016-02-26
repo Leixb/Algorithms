@@ -5,8 +5,7 @@ namespace error {
     enum frac {DEN_EQ_0=0xF, INVALID_FRACTION_INPUT, INVALID_SEPARATOR, INVALID_USEPARATOR};
 }
 
-typedef long T;
-
+template <class T>
 T egcd(T a, T b) { return b?egcd(b, a%b):a;  }
 
 class frac {
