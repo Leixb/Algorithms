@@ -4,7 +4,7 @@
 #include "geometry.h"
 using namespace std;
 
-int func (int n) {return n^2;}
+int func (int n) {return n*n;}
 
 int main () {
     // Sample usage
