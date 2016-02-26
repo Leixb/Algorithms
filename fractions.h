@@ -109,5 +109,3 @@ public:
     }
 };
 
-T func (T n) {return n+4;}
-
