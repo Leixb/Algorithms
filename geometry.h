@@ -4,19 +4,18 @@ using namespace std;
 
 #define PI 3.14159265359
 
-template <class T>
 class deg {
 
-    T D;
+    double D;
 
     public:
     
-    deg (T _r): D(_r) {}
+    deg (double _r): D(_r) {}
 
-    T rad () {return (D%360)*PI/180.0;}
-    T d () {return D;}
+    double rad () {return (D%360.0)*PI/180.0;}
+    double d () {return D;}
 
-    void simplify () {D%=360;}
+    void simplify () {D%=360.0;}
 };
 
 template <class T>
@@ -33,7 +32,7 @@ class vect {
     }
 
     T w() {return sqrt(X*X+Y*Y);}
-    deg <double> deg() {return atan(Y/X);}
+    deg deg() {return atan(Y/X);}
     T x() {return X;}
     T y() {return Y;}
 

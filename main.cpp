@@ -10,7 +10,7 @@ int main () {
     // Sample usage
     try {
         int n;
-        adj<unsigned long long>::simple = false;
+        adj<unsigned long long>::simple = true;
         cin >> n;
         adj <unsigned long long> mat (n);
         cin >> mat;
@@ -43,7 +43,7 @@ int main () {
         cin >> a >> b;
         frac <long> f (a,b);
         cout << f << endl;
-        frac f2;
+        frac <int> f2;
         cin >> f2;
         cout << f2 << endl;
         cout << f2.invert().runfunc(func) << endl;

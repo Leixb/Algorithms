@@ -8,6 +8,7 @@ namespace error {
 template <class T>
 T egcd(T a, T b) { return b?egcd(b, a%b):a;  }
 
+template <class T>
 class frac {
 
     T N, D, E;
@@ -81,7 +82,7 @@ public:
         return in;
     }
 
-    frac runfunc(T (*func)(T)) const { return frac(func(n()),func(d())); }
+    frac runfunc(T (*func)(T)) const { return frac <T> (func(n()),func(d())); }
     frac applyfunc(T (*func)(T)) { N = func(n()); D = func(d()); simplify(); return *this; }
 
     void n(T n) {N = n; simplify();}
