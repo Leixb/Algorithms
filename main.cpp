@@ -1,13 +1,41 @@
 #include <iostream>
+#include <vector>
+#include <set>
 #include "graphs.h"
 #include "fractions.h"
-#include "geometry.h"
+#include "disjoint-set.h"
+//#include "geometry.h"
 using namespace std;
 
 int func (int n) {return n*n;}
 
 int main () {
     // Sample usage
+    // Disjoint sets:
+    
+    int n;
+    cin >> n;
+    set <string> v;
+    for (int i = 0; i < n; i++) {
+        string tmp;
+        cin >> tmp;
+        v.insert(tmp);
+    }
+    dset <string> ds (v);
+
+    for (int i = 0; i < n; i++)cout << ds[i].p << ' ' << ds[i].d << endl;
+
+    cin >> n;
+
+    while (n--) {
+        int a, b;
+        cin >> a >> b;
+        ds.unite(a,b);
+    }
+    
+    for (size_t i = 0; i < ds.size(); i++)cout << ds[i].p << ' ' << ds[i].d << endl;
+    return 0;
+
     try {
         int n;
         adj<unsigned long long>::simple = true;
