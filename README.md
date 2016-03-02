@@ -5,6 +5,7 @@ Basic C++ Algorithms and Classes to be used for competitive programming
 - Fractions
 - Geometry
 - Graphs
+- Disjoint Set
 - ... (more)
 
 ## Fractions
@@ -18,3 +19,6 @@ Contains some classes to manage typicall geometry problems. At the moment it con
 
 ## Graphs
 Contains a class to manage an adjacency matrix and some basic graph algorithms. (Full functionality with non simple graphs is not yet implemented and more algorithms will be coming soon).
+
+## Disjoint Set
+Contains a disjoint set class using pointers
