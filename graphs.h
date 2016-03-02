@@ -10,13 +10,6 @@ namespace error {
     enum graphs {INVALID_INPUT=0xff, ERR_READ_FILE, NOT_CONNECTED, NOT_SIMPLE_DIRECTED, NOT_SIMPLE_LOOP, INV_MEM, INV_COORD, OUT_OF_BOUNDS};
 }
 
-struct coord {
-    size_t x,y;
-    coord (size_t _X=0, size_t _Y=0): x(_X), y(_Y) {}
-
-    bool operator== (const coord& c2) const {return (c2.x==x and c2.y==y);}
-};
-
 struct edge {
     size_t w, a, b;
     edge (size_t W, size_t A, size_t B):  w(W), a(A), b(B) {}
@@ -38,7 +31,6 @@ class adj {
     adj (size_t N=0) { v = vector <vector <T> > (N, vector <T> (N,0)); }
 
     vector <T>& operator[] (const size_t& p) { if (p < v.size()) return v[p]; else throw error::INV_MEM; }
-    T& operator[] (const coord& p) { if(p.x < v.size() and p.y < v.size()) return v[p.x][p.y]; else throw error::INV_MEM; }
     T& operator[] (const edge& e) { if(e.a < v.size() and e.b < v.size()) return v[e.a][e.b]; else throw error::INV_MEM; }
     
     size_t size() { return v.size(); }
@@ -148,6 +140,19 @@ class adj {
         for (size_t i = 0; i < v.size(); i++) if (v[i][i] != 0) throw error::NOT_SIMPLE_LOOP;
         return true;
     }
+};
+
+template <class T>
+class adjlist {
+
+    vector <bool> fets_bfs;
+
+    public:
+
+    vector <vector < pair <T,T> > > v;
+
+    adjlist () {}
+
 };
 
 template <class T>
