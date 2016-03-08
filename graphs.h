@@ -20,7 +20,7 @@ struct comp { bool operator() (edge e1, edge e2) { return e1.w > e2.w; } };
 template <class T>
 class adj {
 
-    mutable vector <bool> fetsbfs;
+    mutable vector <bool> fets;
 
     public:
 
@@ -32,7 +32,7 @@ class adj {
 
     vector <T>& operator[] (const size_t& p) { if (p < v.size()) return v[p]; else throw error::INV_MEM; }
     T& operator[] (const edge& e) { if(e.a < v.size() and e.b < v.size()) return v[e.a][e.b]; else throw error::INV_MEM; }
-    
+
     size_t size() { return v.size(); }
 
     friend ostream& operator<< (ostream& out, const adj& mat) {
@@ -54,14 +54,29 @@ class adj {
         return in;
     }
 
-    bool bfs (size_t b, const size_t& e, bool flag=1) const {
-        if (flag) fetsbfs = vector <bool> (v.size(),false);
+    bool dfs (size_t b, const size_t& e, bool flag=1) const {
+        if (flag) fets = vector <bool> (v.size(),false);
         if (b == e) return true;
-        if (fetsbfs[b]) return false;
-        fetsbfs[b]=true;
+        if (fets[b]) return false;
+        fets[b]=true;
         for (size_t i = 0; i < v.size(); i++)
-            if (v[b][i]!=0) if (bfs(i,e,0)) return true;
+            if (v[b][i]!=0) if (dfs(i,e,0)) return true;
         return false;
+    }
+
+    int bfs (size_t b, const size_t& e) const {
+        int d = 0;
+        fets = vector <bool> (fets.size(),false);
+        queue <T> q;
+        q.push(b);
+        do {
+            b = q.top(); q.pop();
+            fets[b]=true;
+            if (b==e) return d;
+            for (size_t  i = 0; i < v.size(); i++) if (v[b][i] and !fets[i]) q.push(v[b][i]);
+            d++;
+        } while (!q.empty());
+        return -1;
     }
 
     adj kruskal () const { 
@@ -73,7 +88,7 @@ class adj {
             edge ed = q.top(); q.pop();
             if (c == v.size()-1) return mat;
             if (ed.w != 0) 
-                if (!mat.bfs(ed.a,ed.b)) {
+                if (!mat.dfs(ed.a,ed.b)) {
                     mat[ed.a][ed.b] = ed.w;
                     if (simple) mat[ed.b][ed.a] = ed.w;
                     c++;
@@ -145,13 +160,20 @@ class adj {
 template <class T>
 class adjlist {
 
-    vector <bool> fets_bfs;
+    vector <bool> fets;
 
     public:
 
     vector <vector < pair <T,T> > > v;
 
     adjlist () {}
+
+    adjlist (const adj<T>& a) {
+        v.resize(a.v.size());
+        for (int i=0; i < a.v.size(); i++) 
+            for (int j=0; j < a.v[i].size(); j++)
+                if (a.v[i][j]!=0) v[i].push_back(j);
+    }
 
 };
 
