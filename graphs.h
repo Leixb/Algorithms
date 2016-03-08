@@ -21,6 +21,7 @@ template <class T>
 class adj {
 
     mutable vector <bool> fets;
+    mutable vector <size_t> vbfs;
 
     public:
 
@@ -64,17 +65,18 @@ class adj {
         return false;
     }
 
-    int bfs (size_t b, const size_t& e) const {
-        int d = 0;
-        fets = vector <bool> (fets.size(),false);
+    int bfs (size_t b=0, const size_t& e=-1) const {
+        vbfs.resize(fets.size(),-1);
+        vbfs[b]=0;
         queue <T> q;
         q.push(b);
         do {
             b = q.top(); q.pop();
-            fets[b]=true;
-            if (b==e) return d;
-            for (size_t  i = 0; i < v.size(); i++) if (v[b][i] and !fets[i]) q.push(v[b][i]);
-            d++;
+            if (b==e) return fets[b];
+            for (size_t  i = 0; i < v.size(); i++) if (v[b][i] and vbfs[i]==-1) {
+                q.push(v[b][i]);
+                vbfs[i]=vbfs[b]+1;
+            }
         } while (!q.empty());
         return -1;
     }
