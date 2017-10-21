@@ -6,7 +6,7 @@ namespace error {
 }
 
 template <class T>
-T egcd(T a, T b) { return b?egcd(b, a%b):a;  }
+T egcd(T a, T b) { return b? egcd(b, a%b) : a;  }
 
 template <class T>
 class frac {
@@ -17,37 +17,39 @@ class frac {
     string SEP, USEP;
 
 public:
-    
+
     bool UN, SIMPL;
 
-    frac (): SEP("/"), USEP("/"), UN(0), SIMPL(1) {}
-    frac (const T& n, const T& d = 1) : N(n), D(d), SEP("/"), USEP("/"), UN(0), SIMPL(1) {simplify();}
-    frac (const frac& f) : N(f.N), D(f.D), SEP(f.SEP), USEP(f.USEP), UN(f.UN), SIMPL(f.SIMPL)  {simplify();}
+    frac(): SEP("/"), USEP("/"), UN(0), SIMPL(1) {}
+    frac(const T& n, const T& d = 1) : N(n), D(d), SEP("/"), USEP("/"), UN(0), SIMPL(1) {simplify();}
+    frac(const frac& f) : N(f.N), D(f.D), SEP(f.SEP), USEP(f.USEP), UN(f.UN), SIMPL(f.SIMPL)  {simplify();}
 
-    T n() const {if (SIMPL) return N; return N*GCD; }
-    T d() const {if (SIMPL) return D; return D*GCD; }
-    T gcd() const {return GCD;}
+    T n() const { return SIMPL? N : N*GCD; }
+    T d() const { return SIMPL? D : D*GCD; }
+    T gcd() const { return GCD; }
 
     string separator() {return SEP;}
 
-    frac invert () { N ^= D; D ^= N; N ^= D; return *this; }
-    double aprox () const { return N/D; }
+    frac invert() { N ^= D; D ^= N; N ^= D; return *this; }
+    double aprox() const { return N/D; }
 
-    inline frac operator+ (const frac& f) const { return frac(N+f.N,D+f.D); }
-    inline frac operator- (const frac& f) const { return frac(N-f.N,D-f.D); }
-    inline frac operator* (const frac& f) const { return frac(N*f.N,D*f.D); }
-    inline frac operator/ (const frac& f) const { return frac(N*f.D,D*f.N); }
+    inline frac operator*(const T& k) const { return frac(N*k,D); }
 
-    inline frac operator+= (const frac& f) { *this = *this + f; return *this; }
-    inline frac operator-= (const frac& f) { *this = *this - f; return *this; }
-    inline frac operator*= (const frac& f) { *this = *this * f; return *this; }
-    inline frac operator/= (const frac& f) { *this = *this / f; return *this; }
+    inline frac operator+(const frac& f) const { return frac(N*f.D+f.N*D, D*f.D); }
+    inline frac operator-(const frac& f) const { return *this + (-1)*f; }
+    inline frac operator*(const frac& f) const { return frac(N*f.N, D*f.D); }
+    inline frac operator/(const frac& f) const { return frac(N*f.D, D*f.N); }
 
-    inline bool operator== (const frac& f) const { return (N==f.N and D==f.N); }
-    inline bool operator>= (const frac& f) const { return (N*f.D >= f.N*D); }
-    inline bool operator<= (const frac& f) const { return (N*f.D <= f.N*D); }
-    inline bool operator< (const frac& f) const { return (N*f.D > f.N*D); }
-    inline bool operator> (const frac& f) const { return (N*f.D < f.N*D); }
+    inline frac operator+=(const frac& f) { *this = *this + f; return *this; }
+    inline frac operator-=(const frac& f) { *this = *this - f; return *this; }
+    inline frac operator*=(const frac& f) { *this = *this * f; return *this; }
+    inline frac operator/=(const frac& f) { *this = *this / f; return *this; }
+
+    inline bool operator==(const frac& f) const { return (N==f.N and D==f.N); }
+    inline bool operator>=(const frac& f) const { return (N*f.D >= f.N*D); }
+    inline bool operator<=(const frac& f) const { return (N*f.D <= f.N*D); }
+    inline bool operator<(const frac& f) const { return (N*f.D > f.N*D); }
+    inline bool operator>(const frac& f) const { return (N*f.D < f.N*D); }
 
     friend ostream& operator<< (ostream& out, const frac& f) {
         out << f.n() << f.SEP << f.d();
@@ -82,8 +84,8 @@ public:
         return in;
     }
 
-    frac runfunc(T (*func)(T)) const { return frac <T> (func(n()),func(d())); }
-    frac applyfunc(T (*func)(T)) { N = func(n()); D = func(d()); simplify(); return *this; }
+    frac runfunc(T (*func)(T)) const { return frac <T> (func(n()), func(d())); }
+    frac applyfunc(T (*func)(T)) { *this = runfunc(func); return *this; }
 
     void n(T n) {N = n; simplify();}
     void d(T d) {D = d; simplify();}
@@ -98,7 +100,7 @@ public:
         USEP = s;
     }
 
-    bool simplify () {
+    bool simplify() {
         if (N > 0 and  D < 0) {N*=-1; D*=-1;}
         else if ( N < 0 and D < 0 ) {N*=-1; D*=-1; }
         if (D == 0) throw error::DEN_EQ_0;
